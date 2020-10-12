@@ -11,7 +11,7 @@ import tensorflow as tf
 import logging
 
 logging.basicConfig(level=logging.DEBUG, filenam="debuglog.txt")
-USE_GPU = True
+USE_GPU = False
 
 
 def download_parameters():

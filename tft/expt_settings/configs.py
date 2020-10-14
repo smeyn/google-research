@@ -42,7 +42,7 @@ class ExperimentConfig(object):
         experiment.
     """
 
-    default_experiments = ['clr-store', 'volatility',
+    default_experiments = ['walmart', 'volatility',
                            'electricity', 'traffic', 'favorita']
 
     def __init__(self, experiment='volatility', root_folder=None):
@@ -80,7 +80,7 @@ class ExperimentConfig(object):
     @property
     def data_csv_path(self):
         csv_map = {
-            'clr-store': 'ponsonby.csv',
+            'walmart': 'long_std.feather',
             'volatility': 'formatted_omi_vol.csv',
             'electricity': 'hourly_electricity.csv',
             'traffic': 'hourly_data.csv',
@@ -102,7 +102,7 @@ class ExperimentConfig(object):
         """
 
         data_formatter_class = {
-            'clr-store': data_formatters.clr_store.StoreFormatter,
+            'walmart': data_formatters.walmart.SalesFormatter,
             'volatility': data_formatters.volatility.VolatilityFormatter,
             'electricity': data_formatters.electricity.ElectricityFormatter,
             'traffic': data_formatters.traffic.TrafficFormatter,

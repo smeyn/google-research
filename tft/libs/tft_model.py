@@ -942,7 +942,7 @@ class TemporalFusionTransformer(object):
         def get_lstm(return_state):
             """Returns LSTM cell initialized with default parameters."""
             if self.use_cudnn:
-                lstm = tf.keras.layers.CuDNNLSTM(
+                lstm = tf.compat.v1.keras.layers.CuDNNLSTM(
                     self.hidden_layer_size,
                     return_sequences=True,
                     return_state=return_state,

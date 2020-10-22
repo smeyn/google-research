@@ -1,6 +1,5 @@
 import sklearn.preprocessing  # Used for data standardization
 from libs import utils        # Load TFT helper functions
-from data_formatters.walmart import SalesFormatter
 from data_formatters.base import GenericDataFormatter, DataTypes, InputTypes
 from libs.tft_model import TemporalFusionTransformer
 from script_download_data import main as download_data
@@ -14,9 +13,10 @@ from logging.config import dictConfig
 from pandas import Timestamp
 
 USE_GPU = True
-input_path = "/home/jupyter/long_std.feather"
-
-
+#input_path = "/home/jupyter/long_std.feather"
+#input_path = "D:\\steph\\Google Drive\\src\\Kaggle\\M5-WALMART\\DATA\\combined.csv"
+input_path = "D:\\steph\\Google Drive\\src\\Kaggle\\M5-WALMART\\DATA\\combined.feather"
+output_folder = "D:\\steph\\Google Drive\\src\\Kaggle\\M5-WALMART\\output"
 logging_config = {
     "version": 1,
     "formatters": {
@@ -40,17 +40,9 @@ logging_config = {
 }
 dictConfig(logging_config)
 LOG = logging.getLogger(__name__)
+from data_formatters.walmart import SalesFormatter
 
-
-def read_data(input_path):
-    # Download parameters
-
-    # converters = {
-    #   0: int, 1:float,2: float,3: float,4: int, 5:int, 6:int,7: int, 8:int, 9:float,10: int,11:int
-    # }
-    # Load the downloaded data
-    df = pd.read_feather(input_path)
-    return df
+ 
 
 
 def run_train():
@@ -88,6 +80,21 @@ if __name__ == '__main__':
     from data_formatters.base import GenericDataFormatter, DataTypes, InputTypes
 
     df = pd.read_feather(input_path)
+    """batch_size=1000
+    label_name = 'value'
+    select_columns = ['date', 'id', 'value', 'wm_yr_wk', 'weekday', 'wday', 'month', 'year',
+       'event_name_1', 'event_type_1', 'event_name_2', 'event_type_2',
+       'snap_CA', 'snap_TX', 'snap_WI', 'store_id', 'item_id', 'sell_price',
+       'cat_id', 'dept_id', 'state_id'
+    ]
+    df  = tf.data.experimental.make_csv_dataset(
+        input_path, batch_size=batch_size,  
+        label_name=label_name, select_columns=select_columns,   shuffle=True,
+        shuffle_buffer_size=10000, shuffle_seed=None, prefetch_buffer_size=None,
+        num_parallel_reads=None, sloppy=False, num_rows_for_inference=100,
+        compression_type=None, ignore_errors=False
+        )
+    """
     # Create a data formatter
     data_formatter = SalesFormatter()
 
@@ -114,17 +121,17 @@ if __name__ == '__main__':
 
     # Folder to save network weights during training.
     model_folder = os.path.join(
-        output_folder, 'saved_models', 'traffic', 'fixed')
+        output_folder, 'saved_models', 'walmart', 'fixed')
     model_params['model_folder'] = model_folder
 
     model_params.update(data_params)
-    # Specify GPU usage
+    """# Specify GPU usage
     if USE_GPU:
         tf_config = utils.get_default_tensorflow_config(
             tf_device="gpu", gpu_id=0)
     else:
         tf_config = utils.get_default_tensorflow_config(
-            tf_device="cpu", gpu_id=0)
+            tf_device="cpu", gpu_id=0)"""
     LOG.info("Starting Training")
 
     model = run_train()
